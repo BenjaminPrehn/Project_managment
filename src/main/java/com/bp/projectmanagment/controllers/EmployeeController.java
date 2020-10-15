@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     @Autowired
@@ -18,15 +20,22 @@ public class EmployeeController {
 
     @GetMapping("/new")
     public String displayEmployeeForm(Model model){
-        Employee aEmployee = new Employee();
-        model.addAttribute("employee",aEmployee);
-        return"/new-employee";
+        Employee anEmployee = new Employee();
+        model.addAttribute("employee",anEmployee);
+        return"employees/new-employee";
     }
 
     @PostMapping("/save")
     public String createEmployee(Employee employee, Model model){
         empRepo.save(employee);
 
-        return"redirect:/employee/new";
+        return"redirect:/employees/new";
+    }
+
+    @GetMapping("/")
+    public String displayEmployees(Model model){
+       List<Employee> employees = empRepo.findAll();
+       model.addAttribute("employees", employees);
+       return"employees/list-employees";
     }
 }
