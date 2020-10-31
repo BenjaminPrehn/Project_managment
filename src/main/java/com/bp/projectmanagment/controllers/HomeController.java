@@ -6,6 +6,8 @@ import com.bp.projectmanagment.dto.ChartData;
 import com.bp.projectmanagment.dto.EmployeeProject;
 import com.bp.projectmanagment.entities.Employee;
 import com.bp.projectmanagment.entities.Project;
+import com.bp.projectmanagment.services.EmployeeService;
+import com.bp.projectmanagment.services.ProjectService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,9 @@ public class HomeController {
     private String ver;
 
     @Autowired
-    ProjectRepository proRepo;
+    ProjectService proRepo;
     @Autowired
-    EmployeeRepository empRepo;
+    EmployeeService empRepo;
 
     @GetMapping("/")
     public String displayHome(Model model) throws JsonProcessingException {
@@ -36,7 +38,7 @@ public class HomeController {
 
         Map<String, Object> map = new HashMap<>();
 
-        List<Project> projects = proRepo.findAll();
+        List<Project> projects = proRepo.getAll();
         model.addAttribute("projects", projects);
 
         List<ChartData> projectData = proRepo.getProjectStatus();

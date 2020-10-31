@@ -4,6 +4,8 @@ import com.bp.projectmanagment.dao.EmployeeRepository;
 import com.bp.projectmanagment.dao.ProjectRepository;
 import com.bp.projectmanagment.entities.Employee;
 import com.bp.projectmanagment.entities.Project;
+import com.bp.projectmanagment.services.EmployeeService;
+import com.bp.projectmanagment.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +21,16 @@ import java.util.List;
 public class ProjectController {
 
     @Autowired
-    ProjectRepository proRepo;
+    ProjectService proRepo;
 
     @Autowired
-    EmployeeRepository empRepo;
+    EmployeeService empRepo;
 
     @GetMapping("/new")
     public String displayProjectForm(Model model){
 
         Project aProject = new Project();
-        List<Employee> employees = empRepo.findAll();
+        List<Employee> employees = empRepo.getAll();
         model.addAttribute("project" , aProject);
         model.addAttribute("allEmployees" , employees);
 
@@ -46,7 +48,7 @@ public class ProjectController {
 
     @GetMapping("/")
     public String displayProjects(Model model){
-        List<Project> projects = proRepo.findAll();
+        List<Project> projects = proRepo.getAll();
         model.addAttribute("projects", projects);
         return "projects/list-projects";
     }

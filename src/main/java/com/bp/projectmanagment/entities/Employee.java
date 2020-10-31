@@ -1,17 +1,32 @@
 package com.bp.projectmanagment.entities;
 
+import com.bp.projectmanagment.validators.UniqueValue;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
+    @SequenceGenerator(name="employee_seq",sequenceName="employee_seq", allocationSize = 1)
     private long employeeId;
-
+    @NotNull
+    @Size(min=2, max=50)
     private String firstname;
+
+    @NotNull
+    @Size(min=2, max=50)
     private String lastname;
+
+    @NotNull
+    @Email
+    @UniqueValue
     private String email;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST},
@@ -20,6 +35,8 @@ public class Employee {
             joinColumns = @JoinColumn(name="employee_Id"),
             inverseJoinColumns = @JoinColumn(name="project_Id")
     )
+
+    @JsonIgnore
     private List<Project> projects;
 
     public Employee() {

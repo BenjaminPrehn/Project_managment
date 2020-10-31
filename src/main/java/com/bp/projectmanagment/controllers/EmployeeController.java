@@ -2,6 +2,7 @@ package com.bp.projectmanagment.controllers;
 
 import com.bp.projectmanagment.dao.EmployeeRepository;
 import com.bp.projectmanagment.entities.Employee;
+import com.bp.projectmanagment.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,7 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    EmployeeRepository empRepo;
+    EmployeeService empRepo;
 
     @GetMapping("/new")
     public String displayEmployeeForm(Model model){
@@ -29,12 +30,12 @@ public class EmployeeController {
     public String createEmployee(Employee employee, Model model){
         empRepo.save(employee);
 
-        return"redirect:/employees/new";
+        return"redirect:/employees/";
     }
 
     @GetMapping("/")
     public String displayEmployees(Model model){
-       List<Employee> employees = empRepo.findAll();
+       List<Employee> employees = empRepo.getAll();
        model.addAttribute("employees", employees);
        return"employees/list-employees";
     }
